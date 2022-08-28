@@ -1,17 +1,72 @@
 div.App 
 {
-  background-color: darkslategray;
+  background-color: #131d27;
   width: 100vw;
   height: 100vh;
 }
 
-div.switch-button
+div.main
+{
+  width: 100%;
+  height: 100%;
+  min-height: 55px;
+  
+  overflow: hidden;
+}
+
+div.header
+{
+  background-color: #2a7291;
+
+  width: inherit;
+  height: 10%;
+  min-height: 50px;
+
+  align-items: center;
+  justify-content: center;
+
+  display: grid;
+  gap: 5px;
+  grid-template-rows: 1fr 2fr 1fr;
+  grid-template-columns: 1fr 3fr 1fr 1fr;
+  grid-template-areas: 
+    " . . . ."
+    " . input option  ."
+    " . . . ."
+  ;
+}
+
+div.content
+{
+  position: relative;
+  width: 100%;
+  height: 90%;
+}
+
+button.switch-button
 {
   position: fixed;
-  top: 2ex;
-  left: 2ex;
+  top: 2vh;
+  right: 5vw;
 
-  width: 8ex;
-  height: 8ex;
-  background-color: brown;
+  width: 5vw;
+  height: 5vh;
+
+  min-height: 50px;
+  min-width: 50px;
+
+  max-width: 150px;
+  max-height: 150px;
+  background-color: #ffffff00;
+  background-repeat: no-repeat;
+  background-position: center;
+  border: 0;
+}
+button.switch-button.search
+{
+  background-image: url("../public/gallery.svg");
+}
+button.switch-button.stats
+{
+  background-image: url("../public/pie-chart.svg");
 }

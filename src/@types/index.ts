@@ -19,11 +19,7 @@ export interface IconMetatdata {
   [streamer: string] : IconList
 }
 
-export interface Stats {
-  [iconNameHash: string]: number
+export interface IconWithStats extends Icon {
+  stats: number,
+  streamer: string,
 }
-
-export interface IconStats {
-  [streamer: string]: Stats
-}
-

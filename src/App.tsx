@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import "./App.css";
 
-import { IconMetatdata, IconList, Stats, IconStats } from './@types';
+import { IconMetatdata, IconList, IconWithStats } from './@types';
 
 import Search from "./components/Search";
 import SearchResults from './components/SearchList';
@@ -12,10 +12,10 @@ import StatsList from "./components/Stats";
 function App() {
   const [showStats, setShowStats] = useState<boolean>(false);
   const [data, setData] = useState<IconMetatdata>({});
+  const [stats, setStats] = useState<IconWithStats[]>([]);
   const [streamerList, setStreamerList] = useState<string[]>([]);
   const [searchKey, setSearchKey] = useState<string>("");
   const [searchStreamer, setSearchStreamer] = useState<string>("");
-  const [stats, setStats] = useState<IconStats>({});
 
   const SearchInputHandler = (searchKey: string, streamer: string) => {
     setSearchKey(searchKey);
@@ -31,16 +31,19 @@ function App() {
       const streamersJson = await (await fetch("https://twitch-icons.probius.dev/list")).json();
       const streamers: string[] = [];
       const newData: IconMetatdata = {};
-      const newStats: IconStats = {};
+      const newStats: IconWithStats[] = [];
 
       const tempData = await Promise.all(streamersJson.map(async (streamerInfo: {name: string, url: string})  => {
         const streamerIcon: IconList = await (await fetch(`https://twitch-icons.probius.dev/list/${streamerInfo.name}`)).json();
-        const streamerStats: Stats = {};
         for(let i=0; i<20; i++)
         {
           const randidx = Math.floor(Math.random() * streamerIcon.icons.length);
           const icon = streamerIcon.icons[randidx];
-          streamerStats[icon.nameHash] = Math.floor(Math.random() * 20);
+          newStats.push({
+            ...icon,
+            stats: Math.floor(Math.random() * 20),
+            streamer: streamerInfo.name,
+          });
         }
 
         streamerIcon.icons = streamerIcon.icons.map(i => {
@@ -51,14 +54,12 @@ function App() {
         const ret: any[] = [];
         ret.push(streamerInfo.name);
         ret.push(streamerIcon);
-        ret.push(streamerStats);
         return ret;
       }));
 
       tempData.forEach((data: any[]) => {
         streamers.push(data[0] as string);
         newData[data[0] as string] = data[1];
-        newStats[data[0] as string] = data[2];
       });
 
       setStreamerList(streamers);
@@ -69,17 +70,17 @@ function App() {
 
   return (
     <div className='App'>
-      <div className='switch-button' onClick={switchButtonHandler}>
-        Switch!
-      </div>
+      <button className={`switch-button ${showStats ? 'stats' : 'search'} `} onClick={switchButtonHandler}>
+      </button>
       {
         showStats 
         ? 
-        <StatsList data={data} stats={stats}/>
+        <StatsList statistics={stats} streamers={streamerList}/>
         :
         <>
-          <Search streamers={streamerList} inputHandler={SearchInputHandler} />      
-          <SearchResults data={data} searchKey={searchKey} streamer={searchStreamer} />
+          <Search streamers={streamerList} inputHandler={SearchInputHandler}>
+            <SearchResults data={data} searchKey={searchKey} streamer={searchStreamer} />
+          </Search>      
         </>
       }
     </div>

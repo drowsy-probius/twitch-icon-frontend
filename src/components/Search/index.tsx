@@ -4,6 +4,7 @@ import "./style.css"
 interface SearchInterface {
   streamers: string[],
   inputHandler: (k: string, s: string) => void;
+  children: JSX.Element,
 }
 
 function Search(props: SearchInterface)
@@ -13,6 +14,7 @@ function Search(props: SearchInterface)
   const {
     streamers,
     inputHandler,
+    children
   } = props;
 
   const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -28,8 +30,8 @@ function Search(props: SearchInterface)
   }
 
   return (
-    <div className="search">
-      <div className="search-container">
+    <div className="main">
+      <div className="header">
         <div className="search-bar">
           <input type="text" onChange={onInputChange}/>
         </div>
@@ -44,6 +46,7 @@ function Search(props: SearchInterface)
           </select>
         </div>
       </div>
+      {children}
     </div>
   )
 }

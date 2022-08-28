@@ -147,7 +147,7 @@ function SearchResults(props: IconListInterface)
   }
 
   return (
-    <div className="icon-list">
+    <div className="content list">
       <div className="list-container">
         <AutoSizer>
           {

@@ -1,0 +1,22 @@
+div.stats
+{
+  overflow: hidden auto;
+  background-color: #d5e3f0;
+}
+
+.stats-canvas
+{
+  margin: auto;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.search-range
+{
+  grid-area: input;
+  width: 90%;
+
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}

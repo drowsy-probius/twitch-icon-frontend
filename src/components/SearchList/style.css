@@ -1,15 +1,12 @@
-div.icon-list 
+div.list 
 {
-  position: relative;
-  width: 100%;
-  height: 90%;
-
   overflow: hidden;
+
 }
 
 div.list-container
 {
-  margin: 5px;
+  margin: 5px 10px;
   height: 100%;
   overflow: hidden;
 }
