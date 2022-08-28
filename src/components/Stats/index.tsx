@@ -8,7 +8,6 @@ import "./style.css";
 
 interface StatsInterface
 {
-  streamers: string[],
   statistics: IconWithStats[]
 }
 
@@ -101,7 +100,7 @@ function getActiveStreamers(stats: IconWithStats[])
 
 function StatsList(props: StatsInterface)
 {
-  const {statistics, streamers} = props;
+  const { statistics } = props;
 
   const [activeStreamers, setActiveStreamers] = useState<string[]>(getActiveStreamers(statistics));
   const [streamer, setStreamer] = useState("");

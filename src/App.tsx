@@ -88,7 +88,7 @@ function App() {
       {
         showStats 
         ? 
-        <StatsList statistics={stats} streamers={streamerList}/>
+        <StatsList statistics={stats} />
         :
         <>
           <Search streamers={streamerList} inputHandler={SearchInputHandler}>
