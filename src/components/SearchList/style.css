@@ -1,0 +1,32 @@
+div.icon-list 
+{
+  position: relative;
+  width: 100%;
+  height: 90%;
+
+  overflow: hidden;
+}
+
+div.list-container
+{
+  margin: 5px;
+  height: 100%;
+  overflow: hidden;
+}
+
+.tippy-box[data-theme~='twitch'] {
+  background-color: black;
+  color: white;
+}
+
+.tippy-box[data-theme~='twitch'][data-placement^='top'] > .tippy-arrow::before {
+  border-top-color: black;
+  color: white;
+}
+
+img
+{
+  width: 100px;
+  height: 100px;
+  padding: 5px;
+}

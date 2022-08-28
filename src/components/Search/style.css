@@ -1,0 +1,53 @@
+div.search
+{
+  background-color: darkcyan;
+  width: 100%;
+  height: 10%;
+}
+
+div.search-container 
+{
+  width: inherit;
+  height: 100%;
+
+  align-items: center;
+  justify-content: center;
+
+  display: grid;
+  gap: 5px;
+  grid-template-rows: 1fr 2fr 1fr;
+  grid-template-columns: 1fr 3fr 1fr 1fr;
+  grid-template-areas: 
+    " . . . ."
+    " . input option  ."
+    " . . . ."
+  ;
+}
+
+div.search-bar 
+{
+  grid-area: input;
+  height: 70%;
+}
+
+div.search-bar input
+{
+  width: 98%;
+  height: 98%;
+
+  padding: 0.5ex 0.3ex 0.5ex 1ex;
+}
+
+div.search-filter
+{
+  grid-area: option;
+}
+
+div.search-filter select 
+{
+  width: 98%;
+  height: 98%;
+
+  margin-left: 1ex;
+  padding: 0.5ex 1ex 0.5ex 0.3ex;
+}

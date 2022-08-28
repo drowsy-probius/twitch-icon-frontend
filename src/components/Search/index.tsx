@@ -1,0 +1,51 @@
+import React, { useState } from "react";
+import "./style.css"
+
+interface SearchInterface {
+  streamers: string[],
+  inputHandler: (k: string, s: string) => void;
+}
+
+function Search(props: SearchInterface)
+{
+  const [selectedStreamer, setSelectedStreamer] = useState<string>("");
+  const [input, setInput] = useState<string>("");
+  const {
+    streamers,
+    inputHandler,
+  } = props;
+
+  const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const searchKey = e.target.value.trim();
+    setInput(searchKey)
+    inputHandler(searchKey, selectedStreamer);
+  }
+  
+  const onSelected = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const streamer = e.target.value;
+    setSelectedStreamer(streamer);
+    inputHandler(input, streamer);
+  }
+
+  return (
+    <div className="search">
+      <div className="search-container">
+        <div className="search-bar">
+          <input type="text" onChange={onInputChange}/>
+        </div>
+        <div className="search-filter">
+          <select name="search-filter-streamer" id="search-filter-streamer" onChange={onSelected}>
+            <option value="">전체</option>
+            {
+              streamers.map((streamer: string) => (
+                <option value={streamer} key={streamer}>{streamer}</option>
+              ))
+            }
+          </select>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default Search;
