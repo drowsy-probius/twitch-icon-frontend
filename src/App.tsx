@@ -70,7 +70,7 @@ function App() {
 
   return (
     <div className='App'>
-      <button className={`switch-button ${showStats ? 'stats' : 'search'} `} onClick={switchButtonHandler}>
+      <button className={`switch-button ${showStats ? 'search' : 'stats'} `} onClick={switchButtonHandler}>
       </button>
       {
         showStats 
