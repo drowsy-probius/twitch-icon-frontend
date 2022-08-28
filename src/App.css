@@ -70,3 +70,24 @@ button.switch-button.stats
 {
   background-image: url("../public/pie-chart.svg");
 }
+
+button.refresh
+{
+  position: fixed;
+  top: 2vh;
+  left: 5vw;
+
+  width: 5vw;
+  height: 5vh;
+
+  min-height: 50px;
+  min-width: 50px;
+
+  max-width: 150px;
+  max-height: 150px;
+  background-color: #ffffff00;
+  background-repeat: no-repeat;
+  background-position: center;
+  border: 0;
+  background-image: url("../public/refresh.svg");
+}

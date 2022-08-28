@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import "./App.css";
 
-import { IconMetatdata, IconList, IconWithStats } from './@types';
+import { Icon, IconMetatdata, IconWithStats } from './@types';
 
 import Search from "./components/Search";
 import SearchResults from './components/SearchList';
@@ -26,52 +26,65 @@ function App() {
     setShowStats(!showStats);
   }
 
+  const refreshButtonHandler = async (e: React.MouseEvent) => {
+    await chrome.runtime.sendMessage({command: "refresh_all"});
+    alert("서버로부터 새 데이터가 있는지 확인합니다. (강제)");
+    window.location.reload();
+  }
+
   useEffect(() => {
     (async () => {
-      const streamersJson = await (await fetch("https://twitch-icons.probius.dev/list")).json();
-      const streamers: string[] = [];
+      const chromeLocalData = await chrome.storage.local.get();
+      const streamerIcon: IconMetatdata = chromeLocalData.iconMetadata;
+      const streamerStats: {[streamer: string]: {[hash: string]: number}} = chromeLocalData.iconStats;
+      const streamers: string[] = Object.keys(streamerIcon);
+
       const newData: IconMetatdata = {};
       const newStats: IconWithStats[] = [];
-
-      const tempData = await Promise.all(streamersJson.map(async (streamerInfo: {name: string, url: string})  => {
-        const streamerIcon: IconList = await (await fetch(`https://twitch-icons.probius.dev/list/${streamerInfo.name}`)).json();
-        for(let i=0; i<20; i++)
+      
+      await Promise.all(streamers.map(streamer => {
+        for(const nameHash of Object.keys(streamerStats[streamer]))
         {
-          const randidx = Math.floor(Math.random() * streamerIcon.icons.length);
-          const icon = streamerIcon.icons[randidx];
+          const iconList = streamerIcon[streamer].icons.filter((i: Icon) => i.nameHash === nameHash);
+          if(iconList.length === 0) continue;
+          const icon = iconList[0];
           newStats.push({
             ...icon,
-            stats: Math.floor(Math.random() * 20),
-            streamer: streamerInfo.name,
+            stats: streamerStats[streamer][nameHash],
+            streamer: streamer,
           });
         }
 
-        streamerIcon.icons = streamerIcon.icons.map(i => {
-          i.streamer = streamerInfo.name;
-          return i;
+        const icons: Icon[] = streamerIcon[streamer].icons.map((icon: Icon) => {
+          return {
+            ...icon,
+            streamer: streamer
+          }
         });
-      
-        const ret: any[] = [];
-        ret.push(streamerInfo.name);
-        ret.push(streamerIcon);
-        return ret;
+        newData[streamer] = {
+          ...streamerIcon[streamer],
+          icons: icons
+        }
+        return;
       }));
 
-      tempData.forEach((data: any[]) => {
-        streamers.push(data[0] as string);
-        newData[data[0] as string] = data[1];
-      });
-
-      setStreamerList(streamers);
+      setStreamerList(streamers)
       setData(newData);
       setStats(newStats);
     })();
+
   }, []);
 
   return (
     <div className='App'>
-      <button className={`switch-button ${showStats ? 'stats' : 'search'} `} onClick={switchButtonHandler}>
-      </button>
+      <button className='refresh' onClick={refreshButtonHandler}></button>
+      {
+        stats.length === 0
+        ?
+        null
+        :
+        <button className={`switch-button ${showStats ? 'search' : 'stats'} `} onClick={switchButtonHandler} />
+      }
       {
         showStats 
         ? 
