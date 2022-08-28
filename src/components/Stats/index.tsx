@@ -31,7 +31,7 @@ function getValues(stats: IconWithStats[], streamer: string)
   return stats
     .filter(icon => (streamer === "" || icon.streamer === streamer))
     .map(icon => icon.stats)
-    .sort();
+    .sort((a, b) => a - b);
 }
 
 function getMinMax(arr: number[])
@@ -150,6 +150,7 @@ function StatsList(props: StatsInterface)
               max={minMax[1]}
               allowOverlap={true}
               onChange={(newValues) => {
+                if(newValues[0] > newValues[1]) return;
                 if(isSameArray(currentRange, newValues)) return;
                 setValues(newValues);
               }}
