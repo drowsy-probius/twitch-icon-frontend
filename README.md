@@ -6,4 +6,4 @@
 
 # Icon sources
 
-`pie-chart.svg`, `gallery.svg` are from (svgrepo.com)[svgrepo.com]
+`pie-chart.svg`, `gallery.svg` are from [svgrepo.com](svgrepo.com)
