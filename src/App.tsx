@@ -28,13 +28,13 @@ function App() {
 
   useEffect(() => {
     (async () => {
-      const streamersJson = await (await fetch("/list")).json();
+      const streamersJson = await (await fetch("./list")).json();
       const streamers: string[] = [];
       const newData: IconMetatdata = {};
       const newStats: IconWithStats[] = [];
 
       const tempData = await Promise.all(streamersJson.map(async (streamerInfo: {name: string, url: string})  => {
-        const streamerIcon: IconList = await (await fetch(`/list/${streamerInfo.name}`)).json();
+        const streamerIcon: IconList = await (await fetch(`./list/${streamerInfo.name}`)).json();
         for(let i=0; i<20; i++)
         {
           const randidx = Math.floor(Math.random() * streamerIcon.icons.length);
