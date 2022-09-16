@@ -22,7 +22,7 @@ function App() {
     setSearchStreamer(streamer);
   }
 
-  const switchButtonHandler = (e: React.MouseEvent) => {
+  const switchButtonHandler = (/* e: React.MouseEvent */) => {
     setShowStats(!showStats);
   }
 
