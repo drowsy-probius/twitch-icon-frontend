@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import "./App.css";
+import Browser from "webextension-polyfill";
 
 import { Icon, IconMetatdata, IconWithStats } from './@types';
 
 import Search from "./components/Search";
 import SearchResults from './components/SearchList';
 import StatsList from "./components/Stats";
-
 
 
 function App() {
@@ -27,16 +27,16 @@ function App() {
   }
 
   const refreshButtonHandler = async (e: React.MouseEvent) => {
-    await chrome.runtime.sendMessage({command: "refresh_all"});
-    alert("서버로부터 새 데이터가 있는지 확인합니다. (강제)");
-    window.location.reload();
+    await Browser.runtime.sendMessage({command: "refresh_all"});
   }
 
   useEffect(() => {
     (async () => {
-      const chromeLocalData = await chrome.storage.local.get();
-      const streamerIcon: IconMetatdata = chromeLocalData.iconMetadata;
-      const streamerStats: {[streamer: string]: {[hash: string]: number}} = chromeLocalData.iconStats;
+      const browserLocalData = await Browser.storage.local.get();
+      const browserSyncData = await Browser.storage.sync.get();
+
+      const streamerIcon: IconMetatdata = browserLocalData.iconMetadata;
+      const streamerStats: {[streamer: string]: {[hash: string]: number}} = browserLocalData.iconStats;
       const streamers: string[] = Object.keys(streamerIcon);
 
       const newData: IconMetatdata = {};
