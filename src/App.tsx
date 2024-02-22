@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import "./App.css";
 
-import { IconMetatdata, IconList, IconWithStats } from './@types';
+import { IconMetatdata, IconList, IconWithStats, StreamerData } from './@types';
 
 import Search from "./components/Search";
 import SearchResults from './components/SearchList';
@@ -33,8 +33,9 @@ function App() {
       const newData: IconMetatdata = {};
       const newStats: IconWithStats[] = [];
 
-      const tempData = await Promise.all(streamersJson.map(async (streamerInfo: {name: string, url: string})  => {
-        const streamerIcon: IconList = await (await fetch(`./list/${streamerInfo.name}`)).json();
+      const tempData = await Promise.all(streamersJson.map(async (streamerInfo: StreamerData) => {
+        const streamerTwitchName = streamerInfo.name.twitch;
+        const streamerIcon: IconList = await (await fetch(`./list/${streamerTwitchName}`)).json();
         for(let i=0; i<20; i++)
         {
           const randidx = Math.floor(Math.random() * streamerIcon.icons.length);
@@ -42,17 +43,17 @@ function App() {
           newStats.push({
             ...icon,
             stats: Math.floor(Math.random() * 20),
-            streamer: streamerInfo.name,
+            streamer: streamerTwitchName,
           });
         }
 
         streamerIcon.icons = streamerIcon.icons.map(i => {
-          i.streamer = streamerInfo.name;
+          i.streamer = streamerTwitchName;
           return i;
         });
       
         const ret: any[] = [];
-        ret.push(streamerInfo.name);
+        ret.push(streamerTwitchName);
         ret.push(streamerIcon);
         return ret;
       }));
